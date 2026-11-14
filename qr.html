@@ -25,7 +25,13 @@ p { margin: 0; color: #B8ABD3; font-size: clamp(16px, 2.6vh, 28px); }
 .qr svg { width: 100%; height: 100%; display: block; }
 .url { font: 800 clamp(16px, 2.6vh, 28px) 'Manrope', sans-serif; color: #F4C430; word-break: break-all; }
 .stars { color: #F4C430; font-size: clamp(24px, 4vh, 44px); letter-spacing: 6px; }
+.fs { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; align-content: center; gap: 14px; border: 0; width: 100%; background: rgba(16,9,28,.9); color: #F7F2FF; font: 800 clamp(22px, 3.4vh, 40px) 'Bricolage Grotesque', system-ui, sans-serif; cursor: pointer; backdrop-filter: blur(4px); }
+.fs svg { width: clamp(56px, 9vh, 96px); height: auto; fill: none; stroke: #F4C430; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.fs small { font: 600 clamp(14px, 2vh, 20px) 'Manrope', sans-serif; color: #B8ABD3; }
+body.full { cursor: none; }
+.fs[hidden] { display: none; }
 @media print {
+  .fs { display: none !important; }
   @page { margin: 12mm; }
   body { background: #fff; color: #160E24; }
   p { color: #4a3d63; }
@@ -35,6 +41,11 @@ p { margin: 0; color: #B8ABD3; font-size: clamp(16px, 2.6vh, 28px); }
 </style>
 </head>
 <body>
+<button class="fs" id="fs" type="button">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+  Click to go full screen
+  <small>or press any key</small>
+</button>
 <main class="poster">
   <div class="brand">
     <span class="chip light"><img src="logos/n7gd.png" alt="N7GD"></span>
@@ -56,6 +67,28 @@ q.addData(target);
 q.make();
 document.getElementById('qr').innerHTML = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
 document.getElementById('url').textContent = target.replace(/^https?:\/\//, '').replace(/\/$/, '');
+
+// Full screen: browsers only allow it after a click or a key press.
+const fs = document.getElementById('fs');
+const isFull = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+async function goFull() {
+  const el = document.documentElement;
+  try {
+    if (el.requestFullscreen) await el.requestFullscreen({ navigationUI: 'hide' });
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  } catch { /* refused: the layer stays, the next click tries again */ }
+  sync();
+}
+function sync() {
+  const full = isFull();
+  fs.hidden = full;
+  document.body.classList.toggle('full', full);
+}
+fs.addEventListener('click', goFull);
+document.addEventListener('keydown', (e) => { if (!isFull() && e.key !== 'Escape' && !e.ctrlKey && !e.metaKey) goFull(); });
+document.addEventListener('fullscreenchange', sync);
+document.addEventListener('webkitfullscreenchange', sync);
+sync();
 </script>
 </body>
 </html>
