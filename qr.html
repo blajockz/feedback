@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feedback QR · N7GD × N7SEC</title>
+<link rel="icon" href="logos/n7gd.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,800&family=Manrope:wght@600;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { display: grid; place-items: center; background: radial-gradient(900px 600px at 0% 0%, rgba(166,139,255,.22), transparent 60%), #160E24; color: #F7F2FF; font: 600 16px/1.4 'Manrope', system-ui, sans-serif; }
+.poster { display: grid; justify-items: center; gap: 2.4vh; text-align: center; padding: 3vh 4vw; }
+.brand { display: flex; gap: 10px; }
+.chip { display: inline-flex; align-items: center; height: 6vh; min-height: 40px; padding: 0 10px; border-radius: 12px; border: 1px solid rgba(232,220,255,.22); }
+.chip img { height: 72%; }
+.chip.light { background: #fff; }
+.chip.dark { background: #000; }
+.chip.dark img { height: 90%; }
+h1 { margin: 0; font: 800 clamp(40px, 7.5vh, 96px)/.95 'Bricolage Grotesque', system-ui, sans-serif; font-stretch: 82%; }
+p { margin: 0; color: #B8ABD3; font-size: clamp(16px, 2.6vh, 28px); }
+.qr { width: min(56vh, 80vw); aspect-ratio: 1; padding: 2.4vh; border-radius: 24px; background: #fff; box-shadow: 0 0 0 6px #F4C430; }
+.qr svg { width: 100%; height: 100%; display: block; }
+.url { font: 800 clamp(16px, 2.6vh, 28px) 'Manrope', sans-serif; color: #F4C430; word-break: break-all; }
+.stars { color: #F4C430; font-size: clamp(24px, 4vh, 44px); letter-spacing: 6px; }
+@media print {
+  @page { margin: 12mm; }
+  body { background: #fff; color: #160E24; }
+  p { color: #4a3d63; }
+  .url { color: #160E24; }
+  .qr { box-shadow: none; border: 3px solid #160E24; }
+}
+</style>
+</head>
+<body>
+<main class="poster">
+  <div class="brand">
+    <span class="chip light"><img src="logos/n7gd.png" alt="N7GD"></span>
+    <span class="chip dark"><img src="logos/n7sec.png" alt="N7SEC"></span>
+  </div>
+  <div class="stars" aria-hidden="true">★★★★★</div>
+  <h1>How was your night?</h1>
+  <p>Scan to rate the event, leave a comment or share a photo.</p>
+  <div class="qr" id="qr" role="img" aria-label="QR code to the feedback page"></div>
+  <div class="url" id="url"></div>
+</main>
+<script type="module">
+import qrcode from './qrcode.js';
+// The QR points to this site's main page. Use qr.html?url=https://… to point it elsewhere.
+const given = new URLSearchParams(location.search).get('url');
+const target = given && /^https?:\/\//.test(given) ? given : new URL('./', location.href).href;
+const q = qrcode(0, 'M');
+q.addData(target);
+q.make();
+document.getElementById('qr').innerHTML = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+document.getElementById('url').textContent = target.replace(/^https?:\/\//, '').replace(/\/$/, '');
+</script>
+</body>
+</html>

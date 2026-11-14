@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#160E24">
+<title>Your feedback · N7GD × N7SEC</title>
+<link rel="icon" href="logos/n7gd.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,700..800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #160E24; --bg-2: #1C1230; --panel: #22173A; --panel-2: #2B1F48; --panel-3: #362859;
+  --line: rgba(232,220,255,.12); --line-2: rgba(232,220,255,.22);
+  --text: #F7F2FF; --muted: #B8ABD3; --faint: #85799F;
+  --gold: #F4C430; --ink: #2A1D00; --good: #34D399; --bad: #F05D5E;
+  --display: 'Bricolage Grotesque', system-ui, sans-serif; --ui: 'Manrope', system-ui, sans-serif;
+  --hex: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='97' viewBox='0 0 56 97'%3E%3Cpath d='M28 0l28 16.2v32.4L28 64.8 0 48.6V16.2zM28 64.8V97M0 48.6L-0 97M56 48.6V97' fill='none' stroke='%23E8DCFF' stroke-opacity='.045' stroke-width='1.2'/%3E%3C/svg%3E");
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { min-height: 100dvh; background: radial-gradient(800px 500px at 0% 0%, rgba(166,139,255,.2), transparent 60%), var(--hex), var(--bg); color: var(--text); font: 500 16px/1.5 var(--ui); -webkit-font-smoothing: antialiased; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.page { width: min(100%, 560px); margin: 0 auto; padding: 20px 18px 48px; display: grid; gap: 22px; }
+.brand { display: flex; align-items: center; gap: 8px; }
+.chip { display: inline-flex; align-items: center; height: 36px; padding: 0 7px; border-radius: 10px; border: 1px solid var(--line-2); }
+.chip img { height: 26px; display: block; }
+.chip.light { background: #fff; }
+.chip.dark { background: #000; padding: 0 5px; }
+.chip.dark img { height: 32px; }
+.brand span { margin-left: 6px; font: 800 17px var(--display); }
+h1 { margin: 6px 0 0; font: 800 clamp(40px, 11vw, 60px)/.95 var(--display); font-stretch: 82%; letter-spacing: -.01em; }
+.lead { margin: 10px 0 0; color: var(--muted); }
+form, .done { display: grid; gap: 20px; padding: 22px 20px; border-radius: 22px; background: var(--panel); border: 1px solid var(--line); }
+.field { display: grid; gap: 8px; min-width: 0; border: 0; margin: 0; padding: 0; }
+.label { font-size: 13px; font-weight: 800; color: var(--muted); padding: 0; }
+.label small { font-weight: 600; color: var(--faint); }
+input[type=text], textarea { width: 100%; padding: 13px 15px; border-radius: 14px; border: 1px solid var(--line-2); background: var(--bg-2); font-size: 16px; font-weight: 600; }
+input[type=text]:focus, textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(244,196,48,.16); }
+textarea { min-height: 120px; resize: vertical; line-height: 1.5; }
+.count { justify-self: end; font-size: 12px; color: var(--faint); margin-top: -4px; }
+.stars { display: flex; gap: 6px; }
+.stars button { width: 52px; height: 52px; padding: 0; border: 0; background: none; display: grid; place-items: center; border-radius: 12px; transition: transform .1s; }
+.stars button:active { transform: scale(.9); }
+.stars svg { width: 44px; height: 44px; fill: var(--panel-3); stroke: var(--line-2); stroke-width: 1; transition: fill .12s; }
+.stars button.on svg { fill: var(--gold); stroke: #ffe08a; }
+.stars-text { min-height: 22px; font-weight: 800; color: var(--gold); }
+.games { display: flex; flex-wrap: wrap; gap: 8px; }
+.games button { padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--bg-2); color: var(--muted); font-weight: 700; font-size: 14px; }
+.games button.on { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.photos { display: flex; flex-wrap: wrap; gap: 10px; }
+.thumb { position: relative; width: 88px; height: 88px; border-radius: 14px; overflow: hidden; border: 1px solid var(--line-2); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb button { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; border-radius: 50%; border: 0; background: rgba(0,0,0,.7); color: #fff; font-size: 15px; line-height: 1; }
+.add { width: 88px; height: 88px; border-radius: 14px; border: 1.5px dashed var(--line-2); background: var(--bg-2); color: var(--muted); display: grid; place-items: center; align-content: center; gap: 2px; font-size: 12px; font-weight: 700; }
+.add b { font-size: 26px; line-height: 1; color: var(--gold); }
+.error { margin: 0; padding: 12px 14px; border-radius: 12px; background: rgba(240,93,94,.1); border: 1px solid rgba(240,93,94,.35); color: #ff9a9b; font-weight: 700; font-size: 14px; }
+.send { min-height: 56px; border-radius: 14px; border: 0; background: var(--gold); color: var(--ink); font-weight: 800; font-size: 17px; }
+.send:disabled { opacity: .55; cursor: default; }
+.done { justify-items: center; text-align: center; padding: 34px 22px; }
+.done h2 { margin: 0; font: 800 32px var(--display); }
+.done p { margin: 0; color: var(--muted); }
+.badge { width: 88px; }
+.badge polygon { fill: var(--good); }
+.badge path { fill: none; stroke: #052a1b; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+.link { border: 0; background: none; color: var(--muted); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main class="page">
+  <header>
+    <div class="brand">
+      <span class="chip light"><img src="logos/n7gd.png" alt="N7GD"></span>
+      <span class="chip dark"><img src="logos/n7sec.png" alt="N7SEC"></span>
+      <span>N7 Kickoff Cup</span>
+    </div>
+  </header>
+
+  <section id="intro">
+    <h1>How was your night?</h1>
+    <p class="lead">Tell the N7GD and N7SEC teams what you liked and what to improve. It takes one minute.</p>
+  </section>
+
+  <form id="form" novalidate>
+    <fieldset class="field">
+      <legend class="label">Your rating</legend>
+      <div class="stars" id="stars" role="radiogroup" aria-label="Rating"></div>
+      <div class="stars-text" id="starsText" aria-live="polite"></div>
+    </fieldset>
+
+    <fieldset class="field">
+      <legend class="label">Favourite game <small>(optional)</small></legend>
+      <div class="games" id="games"></div>
+    </fieldset>
+
+    <label class="field">
+      <span class="label">Your comment <small>(optional)</small></span>
+      <textarea id="comment" maxlength="1500" placeholder="What did you enjoy? What should we change next time?"></textarea>
+      <span class="count" id="count">0 / 1500</span>
+    </label>
+
+    <div class="field">
+      <span class="label">Photos <small>(optional, up to 3)</small></span>
+      <div class="photos" id="photos">
+        <button type="button" class="add" id="addPhoto"><b>+</b>Add photo</button>
+      </div>
+      <input type="file" id="file" accept="image/*" multiple hidden>
+    </div>
+
+    <label class="field">
+      <span class="label">Your name <small>(optional)</small></span>
+      <input type="text" id="name" maxlength="60" autocomplete="name" placeholder="Leave empty to stay anonymous">
+    </label>
+
+    <label class="field">
+      <span class="label">Your team <small>(optional)</small></span>
+      <input type="text" id="team" maxlength="60" placeholder="e.g. Cyber Falcons">
+    </label>
+
+    <p class="error" id="error" role="alert" hidden></p>
+    <button class="send" type="submit" id="send">Send feedback</button>
+  </form>
+
+  <section class="done" id="done" hidden>
+    <svg class="badge" viewBox="0 0 100 100" aria-hidden="true"><polygon points="50,3 93,27 93,73 50,97 7,73 7,27"/><path d="M31 51 l13 13 l26 -28"/></svg>
+    <h2>Thank you!</h2>
+    <p>Your feedback reached the organisers.</p>
+    <button type="button" class="link" id="again">Send another one</button>
+  </section>
+</main>
+
+<script>
+// ---- Settings: your Supabase project (the publishable key is meant to be public) ----
+const SUPABASE_URL = 'https://onjedohvlgxrxfqoxrlj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_nGPDNEi7yzDT520pC1Bm0Q_fsliH2zY';
+const BUCKET = 'feedback';
+// ------------------------------------------------------------------------------------
+
+const GAMES = ['RoboPath', 'The Locked Phone', 'N7 Quiz', 'Huruf'];
+const WORDS = ['', 'Not good', 'Could be better', 'Good', 'Very good', 'Amazing!'];
+const MAX_PHOTOS = 3;
+const $ = (id) => document.getElementById(id);
+const headers = { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY };
+let rating = 0, game = null, photos = [], busy = false; // photos: [{ blob, url }]
+
+// stars
+const STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5l-5.9 3.1 1.2-6.5L2.5 9.5l6.6-.9z"/></svg>';
+for (let i = 1; i <= 5; i++) {
+  const b = document.createElement('button');
+  b.type = 'button'; b.innerHTML = STAR; b.setAttribute('role', 'radio');
+  b.setAttribute('aria-label', i + (i === 1 ? ' star' : ' stars'));
+  b.onclick = () => { rating = i; drawStars(); hideError(); };
+  $('stars').append(b);
+}
+function drawStars() {
+  [...$('stars').children].forEach((b, k) => { b.classList.toggle('on', k < rating); b.setAttribute('aria-checked', String(k + 1 === rating)); });
+  $('starsText').textContent = WORDS[rating];
+}
+drawStars();
+
+// favourite game
+for (const g of GAMES) {
+  const b = document.createElement('button');
+  b.type = 'button'; b.textContent = g; b.setAttribute('aria-pressed', 'false');
+  b.onclick = () => { game = game === g ? null : g; [...$('games').children].forEach((x) => { const on = x.textContent === game; x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on)); }); };
+  $('games').append(b);
+}
+
+$('comment').oninput = () => { $('count').textContent = $('comment').value.length + ' / 1500'; };
+
+// photos: resized in the browser (max 1600 px, JPEG) so uploads stay small
+$('addPhoto').onclick = () => $('file').click();
+$('file').onchange = async (e) => {
+  const files = [...e.target.files].slice(0, MAX_PHOTOS - photos.length);
+  e.target.value = '';
+  for (const f of files) {
+    if (!f.type.startsWith('image/')) continue;
+    try { const blob = await shrink(f); photos.push({ blob, url: URL.createObjectURL(blob) }); }
+    catch { showError('This photo could not be read. Try another one.'); }
+  }
+  drawPhotos();
+};
+async function shrink(file) {
+  const img = await new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = URL.createObjectURL(file); });
+  const scale = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+  const c = document.createElement('canvas');
+  c.width = Math.round(img.naturalWidth * scale); c.height = Math.round(img.naturalHeight * scale);
+  c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+  URL.revokeObjectURL(img.src);
+  const blob = await new Promise((ok) => c.toBlob(ok, 'image/jpeg', 0.8));
+  if (!blob) throw new Error('encode');
+  return blob;
+}
+function drawPhotos() {
+  $('photos').querySelectorAll('.thumb').forEach((n) => n.remove());
+  photos.forEach((p, k) => {
+    const d = document.createElement('div');
+    d.className = 'thumb';
+    d.innerHTML = `<img src="${p.url}" alt="Photo ${k + 1}"><button type="button" aria-label="Remove photo ${k + 1}">×</button>`;
+    d.querySelector('button').onclick = () => { URL.revokeObjectURL(p.url); photos.splice(k, 1); drawPhotos(); };
+    $('photos').insertBefore(d, $('addPhoto'));
+  });
+  $('addPhoto').hidden = photos.length >= MAX_PHOTOS;
+}
+
+function showError(msg) { $('error').textContent = msg; $('error').hidden = false; }
+function hideError() { $('error').hidden = true; }
+const clean = (v) => v.trim() || null;
+
+async function uploadPhoto(blob) {
+  const rnd = crypto.getRandomValues(new Uint32Array(2)).join('');
+  const path = `${new Date().toISOString().slice(0, 10)}/${Date.now()}-${rnd}.jpg`;
+  const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`, {
+    method: 'POST', headers: { ...headers, 'Content-Type': 'image/jpeg', 'x-upsert': 'false' }, body: blob,
+  });
+  if (!res.ok) throw new Error('photo');
+  return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}`;
+}
+
+$('form').onsubmit = async (e) => {
+  e.preventDefault();
+  if (busy) return;
+  if (!rating) { showError('Choose a rating from 1 to 5 stars.'); $('stars').firstChild.focus(); return; }
+  hideError();
+  busy = true; $('send').disabled = true; $('send').textContent = photos.length ? 'Uploading photos…' : 'Sending…';
+  try {
+    const images = [];
+    for (const p of photos) images.push(await uploadPhoto(p.blob));
+    $('send').textContent = 'Sending…';
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/feedback`, {
+      method: 'POST',
+      headers: { ...headers, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ rating, favorite_game: game, comment: clean($('comment').value), name: clean($('name').value), team: clean($('team').value), images }),
+    });
+    if (!res.ok) throw new Error('save');
+    $('form').hidden = true; $('intro').hidden = true; $('done').hidden = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    showError(err.message === 'photo' ? 'A photo could not be uploaded. Remove it or try again.' : 'Your feedback could not be sent. Check your connection and try again.');
+  } finally {
+    busy = false; $('send').disabled = false; $('send').textContent = 'Send feedback';
+  }
+};
+
+$('again').onclick = () => {
+  rating = 0; game = null; photos.forEach((p) => URL.revokeObjectURL(p.url)); photos = [];
+  $('form').reset(); drawStars(); drawPhotos(); $('count').textContent = '0 / 1500';
+  [...$('games').children].forEach((x) => { x.classList.remove('on'); x.setAttribute('aria-pressed', 'false'); });
+  $('done').hidden = true; $('form').hidden = false; $('intro').hidden = false;
+};
+</script>
+</body>
+</html>
